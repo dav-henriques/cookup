@@ -1,0 +1,45 @@
+{
+  "$schema": "beat-challenge/bpms@1",
+  "version": 1,
+  "description": "Tempo layer. The generator resolves an exact BPM inside the genre window, then labels the zone and picks a compatible groove feel, swing amount and time signature.",
+
+  "zones": [
+    { "id": "crawl",   "name": "Crawl",       "min": 40,  "max": 69,  "note": "Slow enough that every hit is an event." },
+    { "id": "slow",    "name": "Slow",        "min": 70,  "max": 84,  "note": "Head-nod territory. Nothing needs to hurry." },
+    { "id": "classic", "name": "Classic",     "min": 85,  "max": 99,  "note": "The pocket most sample loops were born in." },
+    { "id": "mid",     "name": "Mid",         "min": 100, "max": 119, "note": "Enough motion to dance, enough space to rap." },
+    { "id": "uptempo", "name": "Uptempo",     "min": 120, "max": 139, "note": "Half-time it if the melody needs air." },
+    { "id": "fast",    "name": "Fast",        "min": 140, "max": 159, "note": "Hats carry the energy. Keep the melody simple." },
+    { "id": "hyper",   "name": "Hyper",       "min": 160, "max": 200, "note": "Write for the half-time listener, not the grid." }
+  ],
+
+  "grooveFeels": [
+    { "id": "straight",     "name": "Straight",          "swing": [0, 8],   "note": "Dead on the grid. Let the samples create the wobble." },
+    { "id": "light-swing",  "name": "Light Swing",       "swing": [8, 22],  "note": "Barely there. You should feel it, not hear it." },
+    { "id": "medium-swing", "name": "Medium Swing",      "swing": [22, 40], "note": "Classic MPC territory." },
+    { "id": "heavy-swing",  "name": "Heavy Swing",       "swing": [40, 58], "note": "Push it until it almost trips." },
+    { "id": "drunk",        "name": "Drunk Timing",      "swing": [50, 68], "note": "Nudge hits manually. No two bars identical." },
+    { "id": "behind",       "name": "Behind The Beat",   "swing": [18, 34], "note": "Drag the snare 10-25ms late on purpose." },
+    { "id": "ahead",        "name": "Ahead Of The Beat", "swing": [10, 24], "note": "Push the hats early. It should feel anxious." },
+    { "id": "half-time",    "name": "Half-Time Feel",    "swing": [0, 20],  "note": "Snare on 3. Double the tempo, halve the drums." },
+    { "id": "double-time",  "name": "Double-Time Feel",  "swing": [0, 16],  "note": "Keep the loop slow, run the percussion fast." },
+    { "id": "shuffle",      "name": "Shuffle",           "swing": [44, 62], "note": "Triplet grid underneath everything." }
+  ],
+
+  "timeSignatures": [
+    { "id": "4-4",  "name": "4/4",  "weight": 82, "note": "Default. Nothing to prove." },
+    { "id": "3-4",  "name": "3/4",  "weight": 5,  "note": "Waltz the loop. Rap will have to adapt." },
+    { "id": "6-8",  "name": "6/8",  "weight": 5,  "note": "Rolling triplet feel." },
+    { "id": "5-4",  "name": "5/4",  "weight": 3,  "note": "One extra beat per bar. Nobody will notice at first." },
+    { "id": "7-8",  "name": "7/8",  "weight": 3,  "note": "Loop will fight you. Win anyway." },
+    { "id": "12-8", "name": "12/8", "weight": 2,  "note": "Shuffle blues grid, hip-hop drums." }
+  ],
+
+  "quantizeModes": [
+    { "id": "off",        "name": "No Quantize",        "note": "Play it in. Keep the first take." },
+    { "id": "grid",       "name": "Hard Quantize",      "note": "100% grid. Let the samples do the swinging." },
+    { "id": "partial-50", "name": "50% Quantize",       "note": "Halfway corrected. Keeps human error readable." },
+    { "id": "groove",     "name": "Groove Template",    "note": "Extract the groove from the sample, apply to drums." },
+    { "id": "manual",     "name": "Manual Nudge",       "note": "Drag every hit by ear. No tools." }
+  ]
+}

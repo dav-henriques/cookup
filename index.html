@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#060606">
+  <meta name="color-scheme" content="dark">
+
+  <title>Beat Challenge — Random inspiration for music producers</title>
+  <meta name="description" content="Generate complete beat production challenges: genre, BPM, mood, sample source, drums, creative rules and more. A new challenge every day, the same for everyone.">
+
+  <!-- Social preview ------------------------------------------------------ -->
+  <meta property="og:title" content="Beat Challenge">
+  <meta property="og:description" content="Random inspiration for music producers.">
+  <meta property="og:type" content="website">
+
+  <!-- Icons: the favicon is inline so the app costs zero extra requests ---- -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23060606'/%3E%3Cg stroke='%238ec9ff' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M5 14.5V9.5M9.5 18V6M14 15.5v-7M18.5 13v-2'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- Add to Home Screen: makes the app open chromeless on mobile ---------- -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Beat Challenge">
+
+  <!-- Type: self-hosted Inter variable (see css/variables.css) ------------- -->
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font"
+        type="font/woff2" crossorigin>
+
+  <!-- Styles -------------------------------------------------------------- -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       Background: animated ribbons + bloom + vignette + grain
+       ==================================================================== -->
+  <div class="bg" aria-hidden="true">
+    <canvas id="waves"></canvas>
+    <div class="bg-bloom"></div>
+    <div class="bg-vignette"></div>
+    <div class="bg-grain"></div>
+  </div>
+
+  <div class="app" id="app">
+
+    <!-- ====================================================================
+         Topbar
+         ================================================================== -->
+    <header class="topbar container">
+      <a class="brand" href="#home" aria-label="Beat Challenge — home">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" style="color: var(--mood-tint)">
+            <path d="M5 14.5V9.5M9.5 18V6M14 15.5v-7M18.5 13v-2"/>
+          </svg>
+        </span>
+        <span class="brand__text">
+          <span class="brand__name">Beat Challenge</span>
+          <span class="brand__sub">Producer prompts</span>
+        </span>
+      </a>
+
+      <button class="streak" type="button" data-action="stats-shortcut" title="Consecutive days using the app">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3.5s5.2 4 5.2 8.6a5.2 5.2 0 1 1-10.4 0c0-1.6.7-3 1.6-4.2.3 1.2 1 2 1.9 2.2 0-2.8 1.7-5.6 1.7-6.6z"/>
+        </svg>
+        <span><b id="streak-value">0</b> day streak</span>
+      </button>
+    </header>
+
+    <!-- ====================================================================
+         XMB navigation — horizontal on desktop, tab bar on mobile
+         ================================================================== -->
+    <nav class="xmb container" aria-label="Sections">
+      <div class="xmb__rail" id="xmb-rail" role="tablist">
+
+        <button class="xmb__item" role="tab" type="button" data-view="home"
+                aria-selected="true" aria-controls="view-home">
+          <span class="xmb__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/>
+            </svg>
+          </span>
+          <span class="xmb__label">Generate</span>
+        </button>
+
+        <button class="xmb__item" role="tab" type="button" data-view="daily"
+                aria-selected="false" aria-controls="view-daily">
+          <span class="xmb__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3.5" y="5" width="17" height="15" rx="3"/>
+              <path d="M3.5 10h17M8 3v4M16 3v4"/>
+            </svg>
+          </span>
+          <span class="xmb__label">Daily</span>
+        </button>
+
+        <button class="xmb__item" role="tab" type="button" data-view="history"
+                aria-selected="false" aria-controls="view-history">
+          <span class="xmb__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3 4v4h4"/>
+              <path d="M12 8v4.2l2.8 1.8"/>
+            </svg>
+          </span>
+          <span class="xmb__label">History</span>
+          <span class="xmb__badge" id="badge-history" hidden>0</span>
+        </button>
+
+        <button class="xmb__item" role="tab" type="button" data-view="favorites"
+                aria-selected="false" aria-controls="view-favorites">
+          <span class="xmb__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19.5s-6.8-4.2-8.3-8A4.6 4.6 0 0 1 12 7.2a4.6 4.6 0 0 1 8.3 4.3c-1.5 3.8-8.3 8-8.3 8z"/>
+            </svg>
+          </span>
+          <span class="xmb__label">Saved</span>
+          <span class="xmb__badge" id="badge-favorites" hidden>0</span>
+        </button>
+
+        <button class="xmb__item" role="tab" type="button" data-view="stats"
+                aria-selected="false" aria-controls="view-stats">
+          <span class="xmb__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/>
+            </svg>
+          </span>
+          <span class="xmb__label">Stats</span>
+        </button>
+
+      </div>
+    </nav>
+
+    <!-- ====================================================================
+         Views
+         ================================================================== -->
+    <main class="main container" id="main">
+
+      <!-- Fatal error (data could not be loaded) -->
+      <div class="empty" id="fatal" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/>
+        </svg>
+        <p class="empty__title">Could not load the challenge database</p>
+        <p class="empty__text">
+          Beat Challenge reads its data from <code>/data/*.json</code>, so it needs to be served
+          over http — open it through GitHub Pages or a local server rather than double-clicking
+          the file.
+        </p>
+        <p class="empty__text" id="fatal-detail"></p>
+      </div>
+
+      <!-- ================================================================
+           HOME / GENERATE
+           ============================================================== -->
+      <section class="view is-active" id="view-home" role="tabpanel" aria-labelledby="home-title">
+
+        <!-- Idle state -->
+        <div class="hero" id="home-hero">
+          <div class="hero__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" style="color: var(--mood-tint)">
+              <path d="M5 14.5V9.5M9.5 18V6M14 15.5v-7M18.5 13v-2"/>
+            </svg>
+          </div>
+
+          <h1 class="hero__title" id="home-title">Beat Challenge</h1>
+          <p class="hero__subtitle">Random inspiration for music producers.</p>
+
+          <div class="hero__actions">
+            <button class="btn btn--primary" type="button" data-action="generate">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 4l3 3-3 3M17 14l3 3-3 3"/>
+                <path d="M3.5 7h3.2c1.6 0 2.5.8 3.4 2.2l3.8 5.6c.9 1.4 1.8 2.2 3.4 2.2H20"/>
+                <path d="M3.5 17h3.2c1.6 0 2.5-.8 3.4-2.2l.7-1M20 7h-2.7c-1.6 0-2.5.8-3.4 2.2l-.6 1"/>
+              </svg>
+              Generate Challenge
+            </button>
+
+            <button class="btn btn--ghost btn--sm" type="button" data-action="daily">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3.5" y="5" width="17" height="15" rx="3"/>
+                <path d="M3.5 10h17M8 3v4M16 3v4"/>
+              </svg>
+              Daily Challenge
+            </button>
+          </div>
+
+          <div class="hero__meta">
+            <div class="hero__meta-item">
+              <span class="hero__meta-value" id="hero-total">—</span>
+              <span class="hero__meta-label">Genres</span>
+            </div>
+            <div class="hero__meta-item">
+              <span class="hero__meta-value" id="hero-rules">—</span>
+              <span class="hero__meta-label">Rules</span>
+            </div>
+            <div class="hero__meta-item">
+              <span class="hero__meta-value" id="hero-combos">—</span>
+              <span class="hero__meta-label">Combinations</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="loader" id="home-loader" aria-live="polite">
+          <div class="loader__ring">
+            <div class="loader__eq" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+          <p class="loader__text" id="home-loader-text">Digging through crates</p>
+        </div>
+
+        <!-- Result -->
+        <div class="result" id="home-result">
+          <div class="result__head" id="home-head"></div>
+          <div class="cards" id="home-cards"></div>
+
+          <div class="actions">
+            <button class="btn btn--primary" type="button" data-action="generate">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 4l3 3-3 3M17 14l3 3-3 3"/>
+                <path d="M3.5 7h3.2c1.6 0 2.5.8 3.4 2.2l3.8 5.6c.9 1.4 1.8 2.2 3.4 2.2H20"/>
+                <path d="M3.5 17h3.2c1.6 0 2.5-.8 3.4-2.2l.7-1M20 7h-2.7c-1.6 0-2.5.8-3.4 2.2l-.6 1"/>
+              </svg>
+              Generate Again
+            </button>
+
+            <div class="actions__group">
+              <button class="btn" type="button" data-action="save-image" data-scope="home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3.5" y="4.5" width="17" height="15" rx="3"/>
+                  <circle cx="9" cy="10" r="1.8"/>
+                  <path d="m4.5 17.5 4.6-4.3c.8-.7 1.9-.7 2.7 0l3.1 2.9c.8.7 1.9.7 2.7 0l2-1.8"/>
+                </svg>
+                Save as Image
+              </button>
+
+              <button class="btn" type="button" data-action="copy" data-scope="home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="8.5" y="8.5" width="11" height="11" rx="3"/>
+                  <path d="M15.5 5.5h-8a3 3 0 0 0-3 3v8"/>
+                </svg>
+                Copy
+              </button>
+
+              <button class="btn" type="button" data-action="share" data-scope="home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 15.5V4"/><path d="m8 7.5 4-3.5 4 3.5"/>
+                  <path d="M5 13v5.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V13"/>
+                </svg>
+                Share
+              </button>
+
+              <button class="btn btn--icon" type="button" data-action="favorite" data-scope="home"
+                      aria-pressed="false" aria-label="Save to favourites">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 19.5s-6.8-4.2-8.3-8A4.6 4.6 0 0 1 12 7.2a4.6 4.6 0 0 1 8.3 4.3c-1.5 3.8-8.3 8-8.3 8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           DAILY
+           ============================================================== -->
+      <section class="view" id="view-daily" role="tabpanel" aria-labelledby="daily-title">
+        <div class="view__head">
+          <h2 class="view__title" id="daily-title">Daily Challenge</h2>
+          <p class="view__hint">Same challenge for everyone, worldwide</p>
+        </div>
+
+        <div class="daily-banner">
+          <span id="daily-date">—</span>
+          <span>New challenge in <span class="countdown" id="daily-countdown">--:--:--</span></span>
+        </div>
+
+        <div class="result is-active" id="daily-result">
+          <div class="result__head" id="daily-head"></div>
+          <div class="cards" id="daily-cards"></div>
+
+          <div class="actions">
+            <div class="actions__group">
+              <button class="btn" type="button" data-action="save-image" data-scope="daily">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3.5" y="4.5" width="17" height="15" rx="3"/>
+                  <circle cx="9" cy="10" r="1.8"/>
+                  <path d="m4.5 17.5 4.6-4.3c.8-.7 1.9-.7 2.7 0l3.1 2.9c.8.7 1.9.7 2.7 0l2-1.8"/>
+                </svg>
+                Save as Image
+              </button>
+
+              <button class="btn" type="button" data-action="copy" data-scope="daily">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="8.5" y="8.5" width="11" height="11" rx="3"/>
+                  <path d="M15.5 5.5h-8a3 3 0 0 0-3 3v8"/>
+                </svg>
+                Copy
+              </button>
+
+              <button class="btn" type="button" data-action="share" data-scope="daily">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 15.5V4"/><path d="m8 7.5 4-3.5 4 3.5"/>
+                  <path d="M5 13v5.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V13"/>
+                </svg>
+                Share
+              </button>
+
+              <button class="btn btn--icon" type="button" data-action="favorite" data-scope="daily"
+                      aria-pressed="false" aria-label="Save to favourites">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 19.5s-6.8-4.2-8.3-8A4.6 4.6 0 0 1 12 7.2a4.6 4.6 0 0 1 8.3 4.3c-1.5 3.8-8.3 8-8.3 8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           HISTORY
+           ============================================================== -->
+      <section class="view" id="view-history" role="tabpanel" aria-labelledby="history-title">
+        <div class="view__head">
+          <h2 class="view__title" id="history-title">History</h2>
+          <button class="btn btn--ghost btn--sm" type="button" data-action="clear-history">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4.5 7h15M9.5 7V5.2a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2V7"/>
+              <path d="M6.5 7 7.6 19a1.6 1.6 0 0 0 1.6 1.5h5.6A1.6 1.6 0 0 0 16.4 19L17.5 7"/>
+            </svg>
+            Clear
+          </button>
+        </div>
+        <div class="list" id="history-list"></div>
+      </section>
+
+      <!-- ================================================================
+           FAVOURITES
+           ============================================================== -->
+      <section class="view" id="view-favorites" role="tabpanel" aria-labelledby="favorites-title">
+        <div class="view__head">
+          <h2 class="view__title" id="favorites-title">Saved</h2>
+          <button class="btn btn--ghost btn--sm" type="button" data-action="clear-favorites">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4.5 7h15M9.5 7V5.2a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2V7"/>
+              <path d="M6.5 7 7.6 19a1.6 1.6 0 0 0 1.6 1.5h5.6A1.6 1.6 0 0 0 16.4 19L17.5 7"/>
+            </svg>
+            Clear
+          </button>
+        </div>
+        <div class="list" id="favorites-list"></div>
+      </section>
+
+      <!-- ================================================================
+           STATS
+           ============================================================== -->
+      <section class="view" id="view-stats" role="tabpanel" aria-labelledby="stats-title">
+        <div class="view__head">
+          <h2 class="view__title" id="stats-title">Statistics</h2>
+          <button class="btn btn--ghost btn--sm" type="button" data-action="reset-stats">
+            Reset
+          </button>
+        </div>
+        <div id="stats-body"></div>
+        <p class="view__hint" style="margin-top: var(--s-5)">
+          Everything is stored locally in your browser. Nothing is ever uploaded.
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       Share sheet
+       ==================================================================== -->
+  <div class="sheet" id="share-sheet" role="dialog" aria-modal="true"
+       aria-labelledby="sheet-title" aria-hidden="true">
+    <div class="sheet__backdrop"></div>
+
+    <div class="sheet__panel">
+      <div class="sheet__grabber" aria-hidden="true"></div>
+
+      <h3 class="sheet__title" id="sheet-title">Save as image</h3>
+      <p class="sheet__text">Pick a format. The image is generated on your device.</p>
+
+      <div class="sheet__options">
+        <button class="option" type="button" data-action="set-format" data-format="story"
+                aria-pressed="true">
+          <span class="option__frame option__frame--story" aria-hidden="true"></span>
+          <span class="option__name">Story</span>
+          <span class="option__size">1080 × 1920</span>
+        </button>
+
+        <button class="option" type="button" data-action="set-format" data-format="square"
+                aria-pressed="false">
+          <span class="option__frame option__frame--square" aria-hidden="true"></span>
+          <span class="option__name">Square</span>
+          <span class="option__size">1080 × 1080</span>
+        </button>
+      </div>
+
+      <div class="sheet__preview" id="sheet-preview"></div>
+
+      <div class="actions" style="margin-top: 0">
+        <button class="btn btn--primary" type="button" data-action="download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 4v11"/><path d="m8 11.5 4 3.5 4-3.5"/>
+            <path d="M5 15v3.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V15"/>
+          </svg>
+          Download
+        </button>
+
+        <div class="actions__group">
+          <button class="btn" type="button" data-action="share-image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 15.5V4"/><path d="m8 7.5 4-3.5 4 3.5"/>
+              <path d="M5 13v5.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V13"/>
+            </svg>
+            Share
+          </button>
+          <button class="btn btn--ghost" type="button" data-action="close-sheet">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast host ---------------------------------------------------------- -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- App ----------------------------------------------------------------- -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+/* ============================================================================
+   Beat Challenge — Motion
+   ----------------------------------------------------------------------------
+   All @keyframes and the small utility classes that drive them live here.
+   Components in style.css only reference these by name, never redefine them.
+   ========================================================================= */
+
+/* --- Entrances ----------------------------------------------------------- */
+
+@keyframes bc-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes bc-fade-up {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes bc-fade-down {
+  from { opacity: 0; transform: translate3d(0, -14px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Signature card reveal: rises, un-blurs and settles. */
+@keyframes bc-card-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.965);
+    filter: blur(6px);
+  }
+  60% { filter: blur(0); }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Horizontal XMB-style slide, used when a view enters. */
+@keyframes bc-slide-in {
+  from { opacity: 0; transform: translate3d(28px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes bc-slide-out {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to   { opacity: 0; transform: translate3d(-24px, 0, 0); }
+}
+
+@keyframes bc-scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* --- Exits --------------------------------------------------------------- */
+
+@keyframes bc-card-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(0.97);
+    filter: blur(8px);
+  }
+}
+
+/* --- Ambient / looping --------------------------------------------------- */
+
+@keyframes bc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bc-spin-reverse {
+  to { transform: rotate(-360deg); }
+}
+
+/* Slow breathing glow behind the hero mark. */
+@keyframes bc-breathe {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.06); }
+}
+
+/* Specular sweep across glass surfaces. */
+@keyframes bc-sheen {
+  0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  12%  { opacity: 0.5; }
+  55%  { opacity: 0.5; }
+  100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+}
+
+@keyframes bc-shimmer {
+  0%   { background-position: -180% 0; }
+  100% { background-position: 180% 0; }
+}
+
+@keyframes bc-pulse-ring {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* Equaliser bars used in the loading state. */
+@keyframes bc-eq {
+  0%, 100% { transform: scaleY(0.25); }
+  50%      { transform: scaleY(1); }
+}
+
+@keyframes bc-drift {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(0, -10px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* --- Micro-interactions -------------------------------------------------- */
+
+@keyframes bc-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bc-nudge {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+@keyframes bc-toast-in {
+  from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.96); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes bc-toast-out {
+  from { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  to   { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.97); }
+}
+
+@keyframes bc-sheet-in {
+  from { transform: translate3d(0, 100%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes bc-count-flash {
+  0%   { color: var(--mood-tint); text-shadow: 0 0 24px var(--glow); }
+  100% { color: var(--text); text-shadow: none; }
+}
+
+/* ============================================================================
+   Utility classes
+   ========================================================================= */
+
+.anim-fade-in   { animation: bc-fade-in   var(--t-base) var(--ease-soft) both; }
+.anim-fade-up   { animation: bc-fade-up   var(--t-slow) var(--ease-xmb)  both; }
+.anim-fade-down { animation: bc-fade-down var(--t-slow) var(--ease-xmb)  both; }
+.anim-slide-in  { animation: bc-slide-in  var(--t-slow) var(--ease-xmb)  both; }
+.anim-scale-in  { animation: bc-scale-in  var(--t-base) var(--ease-spring) both; }
+.anim-pop       { animation: bc-pop       var(--t-base) var(--ease-spring); }
+.anim-nudge     { animation: bc-nudge     220ms var(--ease-inout); }
+
+/* Staggering is driven by an inline --i index set when rendering lists. */
+.stagger { animation-delay: calc(var(--i, 0) * var(--stagger)); }
+
+/* Skeleton placeholder used while data loads. */
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(255, 255, 255, 0.10) 40%,
+    rgba(255, 255, 255, 0.04) 60%
+  );
+  background-size: 220% 100%;
+  animation: bc-shimmer 1.5s linear infinite;
+  border-radius: var(--r-sm);
+}
+
+/* Fully disable decorative motion when the OS asks for it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

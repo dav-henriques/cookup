@@ -1,0 +1,551 @@
+{
+  "$schema": "beat-challenge/genres@1",
+  "version": 1,
+  "description": "Genre pool. Each genre carries its own musical gravity: BPM window, swing tendency and affinities that bias the rest of the draw so a challenge reads as a coherent creative direction instead of random noise.",
+  "items": [
+    {
+      "id": "boom-bap",
+      "name": "Boom Bap",
+      "family": "classic",
+      "note": "Hard drums, dusty loop, nothing wasted.",
+      "bpm": { "min": 82, "max": 96 },
+      "swingBias": 0.7,
+      "weight": 6,
+      "affinity": {
+        "moods": ["dusty", "dark", "nostalgic", "gritty", "cold", "melancholic"],
+        "samples": ["soul", "jazz", "funk", "library-music", "gospel", "doo-wop"],
+        "drums": ["dusty", "crunchy", "punchy", "vinyl", "loose"],
+        "eras": ["1994-nyc", "1996-nyc", "1993-queensbridge", "1997-brooklyn"],
+        "instruments": ["rhodes", "upright-bass", "vinyl-guitar-chop", "muted-trumpet"]
+      }
+    },
+    {
+      "id": "jazz-rap",
+      "name": "Jazz Rap",
+      "family": "classic",
+      "note": "Loose, breathing, played-in. Let the horns talk.",
+      "bpm": { "min": 76, "max": 92 },
+      "swingBias": 0.85,
+      "weight": 5,
+      "affinity": {
+        "moods": ["rainy-night", "smoky", "calm", "melancholic", "warm", "nostalgic"],
+        "samples": ["jazz", "japanese-jazz", "spiritual-jazz", "vocal-jazz", "bossa-nova", "lounge-exotica"],
+        "drums": ["loose", "humanized", "soft", "vinyl", "live"],
+        "eras": ["1991-native-tongues", "1996-tokyo", "1994-nyc", "1999-paris"],
+        "instruments": ["piano", "double-bass", "flute", "vibraphone", "muted-trumpet"]
+      }
+    },
+    {
+      "id": "lofi-hip-hop",
+      "name": "Lofi Hip Hop",
+      "family": "chill",
+      "note": "Imperfection is the point. Let it wobble.",
+      "bpm": { "min": 68, "max": 88 },
+      "swingBias": 0.75,
+      "weight": 5,
+      "affinity": {
+        "moods": ["warm", "dreamy", "drowsy", "hazy", "calm", "bittersweet"],
+        "samples": ["bossa-nova", "jazz", "soul", "anime", "field-recording", "easy-listening"],
+        "drums": ["soft", "dusty", "muffled", "loose", "vinyl"],
+        "eras": ["2016-bedroom", "1998-tokyo", "2020-lockdown"],
+        "instruments": ["rhodes", "nylon-guitar", "music-box", "wurlitzer", "felt-piano"]
+      }
+    },
+    {
+      "id": "soulful-boom-bap",
+      "name": "Soulful Boom Bap",
+      "family": "classic",
+      "note": "Chop a voice until it means something new.",
+      "bpm": { "min": 84, "max": 96 },
+      "swingBias": 0.65,
+      "weight": 4,
+      "affinity": {
+        "moods": ["warm", "hopeful", "bittersweet", "spiritual", "nostalgic", "sad"],
+        "samples": ["soul", "gospel", "rnb", "doo-wop", "choir", "gospel-organ"],
+        "drums": ["punchy", "crunchy", "compressed", "vinyl"],
+        "eras": ["2001-chicago", "1996-nyc", "2004-detroit"],
+        "instruments": ["vocal-chop", "rhodes", "organ", "strings"]
+      }
+    },
+    {
+      "id": "modern-boom-bap",
+      "name": "Modern Boom Bap",
+      "family": "classic",
+      "note": "Old bones, clean skin.",
+      "bpm": { "min": 84, "max": 98 },
+      "swingBias": 0.55,
+      "weight": 3,
+      "affinity": {
+        "moods": ["cold", "dark", "cinematic", "gritty", "tense"],
+        "samples": ["library-music", "italian-soundtrack", "psych-rock", "soul", "prog-rock"],
+        "drums": ["punchy", "tight", "saturated", "layered"],
+        "eras": ["2019-brooklyn", "2022-london", "2015-la"],
+        "instruments": ["rhodes", "synth-bass", "cello", "harp"]
+      }
+    },
+    {
+      "id": "griselda",
+      "name": "Griselda",
+      "family": "raw",
+      "note": "Cold loop, no chorus, no mercy.",
+      "bpm": { "min": 82, "max": 94 },
+      "swingBias": 0.4,
+      "weight": 4,
+      "affinity": {
+        "moods": ["cold", "dark", "menacing", "paranoid", "gritty", "lonely"],
+        "samples": ["soul", "italian-soundtrack", "opera", "classical", "chanson", "library-music"],
+        "drums": ["minimal", "dusty", "loose", "muffled"],
+        "eras": ["2019-buffalo", "1996-nyc", "2021-brooklyn"],
+        "instruments": ["strings", "organ", "operatic-vocal", "harpsichord"]
+      }
+    },
+    {
+      "id": "drumless",
+      "name": "Drumless",
+      "family": "raw",
+      "note": "All groove, no kit. The loop has to carry it.",
+      "bpm": { "min": 78, "max": 96 },
+      "swingBias": 0.6,
+      "weight": 2,
+      "affinity": {
+        "moods": ["lonely", "melancholic", "smoky", "cold", "spiritual", "hypnotic"],
+        "samples": ["soul", "spiritual-jazz", "chanson", "classical", "vocal-jazz", "folk"],
+        "drums": ["minimal", "soft"],
+        "eras": ["2021-brooklyn", "1971-philly", "2019-buffalo"],
+        "instruments": ["upright-bass", "rhodes", "strings", "acoustic-guitar"]
+      }
+    },
+    {
+      "id": "trip-hop",
+      "name": "Trip Hop",
+      "family": "chill",
+      "note": "Slow, wide, a little sinister.",
+      "bpm": { "min": 68, "max": 94 },
+      "swingBias": 0.5,
+      "weight": 3,
+      "affinity": {
+        "moods": ["dark", "rainy-night", "paranoid", "cinematic", "smoky", "ethereal"],
+        "samples": ["movie", "library-music", "psych-rock", "ambient", "italian-soundtrack", "opera"],
+        "drums": ["heavy", "compressed", "loose", "gated"],
+        "eras": ["1995-bristol", "1998-london", "2003-berlin"],
+        "instruments": ["theremin", "electric-bass", "mellotron", "cello", "female-vocal"]
+      }
+    },
+    {
+      "id": "abstract",
+      "name": "Abstract Hip Hop",
+      "family": "left",
+      "note": "Break the grid. Then break it again.",
+      "bpm": { "min": 64, "max": 112 },
+      "swingBias": 0.6,
+      "weight": 3,
+      "affinity": {
+        "moods": ["broken", "chaotic", "hazy", "restless", "futuristic", "dreamy"],
+        "samples": ["field-recording", "educational-film", "cartoon", "electronic", "world-music", "new-age"],
+        "drums": ["broken", "humanized", "loose", "distorted", "minimal"],
+        "eras": ["2003-la", "1997-california", "2010-internet"],
+        "instruments": ["detuned-synth", "kalimba", "tape-loop", "modular-bleep"]
+      }
+    },
+    {
+      "id": "experimental",
+      "name": "Experimental",
+      "family": "left",
+      "note": "If it sounds correct, you went too safe.",
+      "bpm": { "min": 58, "max": 172 },
+      "swingBias": 0.5,
+      "weight": 3,
+      "affinity": {
+        "moods": ["chaotic", "broken", "futuristic", "tense", "ethereal", "restless"],
+        "samples": ["field-recording", "electronic", "opera", "educational-film", "ambient", "classical"],
+        "drums": ["distorted", "broken", "gated", "minimal", "machine"],
+        "eras": ["2013-internet", "1999-tokyo", "2024-nowhere"],
+        "instruments": ["modular-bleep", "granular-pad", "prepared-piano", "contact-mic"]
+      }
+    },
+    {
+      "id": "wonky",
+      "name": "Wonky",
+      "family": "left",
+      "note": "Push everything slightly off the grid on purpose.",
+      "bpm": { "min": 76, "max": 104 },
+      "swingBias": 0.9,
+      "weight": 2,
+      "affinity": {
+        "moods": ["hazy", "playful", "drowsy", "broken", "dreamy"],
+        "samples": ["soul", "video-game", "funk", "rnb", "cartoon"],
+        "drums": ["loose", "humanized", "muffled", "swung"],
+        "eras": ["2008-la", "2011-glasgow", "2006-london"],
+        "instruments": ["detuned-synth", "moog-bass", "rhodes", "vocal-chop"]
+      }
+    },
+    {
+      "id": "drill",
+      "name": "Drill",
+      "family": "modern",
+      "note": "Sliding 808s and space where the melody isn't.",
+      "bpm": { "min": 136, "max": 150 },
+      "swingBias": 0.15,
+      "weight": 4,
+      "affinity": {
+        "moods": ["dark", "menacing", "cold", "tense", "aggressive", "paranoid"],
+        "samples": ["opera", "classical", "movie", "turkish-psych", "korean-ballad", "choir"],
+        "drums": ["trap-hats", "tight", "punchy", "distorted"],
+        "eras": ["2020-brooklyn", "2018-london", "2022-paris"],
+        "instruments": ["sliding-808", "bell-lead", "pizzicato-strings", "detuned-flute"]
+      }
+    },
+    {
+      "id": "sample-drill",
+      "name": "Sample Drill",
+      "family": "modern",
+      "note": "Take something beautiful and put it over a slide.",
+      "bpm": { "min": 138, "max": 148 },
+      "swingBias": 0.15,
+      "weight": 3,
+      "affinity": {
+        "moods": ["melancholic", "cinematic", "cold", "nostalgic", "bittersweet"],
+        "samples": ["korean-ballad", "bollywood", "opera", "chanson", "italian-soundtrack", "vocal-jazz"],
+        "drums": ["trap-hats", "punchy", "tight"],
+        "eras": ["2021-london", "2023-brooklyn", "2022-paris"],
+        "instruments": ["sliding-808", "vocal-chop", "strings"]
+      }
+    },
+    {
+      "id": "detroit",
+      "name": "Detroit",
+      "family": "modern",
+      "note": "Fast hats, off-kilter loop, zero polish.",
+      "bpm": { "min": 138, "max": 168 },
+      "swingBias": 0.35,
+      "weight": 3,
+      "affinity": {
+        "moods": ["aggressive", "restless", "gritty", "playful", "chaotic"],
+        "samples": ["soul", "funk", "video-game", "rnb", "disco"],
+        "drums": ["distorted", "loose", "trap-hats", "crunchy"],
+        "eras": ["2019-detroit", "2021-flint", "2003-detroit"],
+        "instruments": ["moog-bass", "detuned-synth", "bell-lead"]
+      }
+    },
+    {
+      "id": "memphis",
+      "name": "Memphis",
+      "family": "raw",
+      "note": "Tape hiss, low fidelity, high dread.",
+      "bpm": { "min": 128, "max": 160 },
+      "swingBias": 0.3,
+      "weight": 3,
+      "affinity": {
+        "moods": ["menacing", "dark", "paranoid", "gritty", "broken"],
+        "samples": ["soul", "movie", "gospel-organ", "funk", "field-recording"],
+        "drums": ["roland-808", "distorted", "muffled", "minimal"],
+        "eras": ["1994-memphis", "1996-memphis", "2017-internet"],
+        "instruments": ["cowbell", "detuned-synth", "organ", "808-bass"]
+      }
+    },
+    {
+      "id": "phonk",
+      "name": "Phonk",
+      "family": "modern",
+      "note": "Cowbell, distortion, and a bad attitude.",
+      "bpm": { "min": 128, "max": 160 },
+      "swingBias": 0.25,
+      "weight": 3,
+      "affinity": {
+        "moods": ["aggressive", "menacing", "night-drive", "chaotic", "gritty"],
+        "samples": ["soul", "movie", "funk", "field-recording", "disco"],
+        "drums": ["distorted", "roland-808", "compressed", "punchy"],
+        "eras": ["2019-internet", "1995-memphis", "2022-moscow"],
+        "instruments": ["cowbell", "808-bass", "detuned-synth", "vocal-chop"]
+      }
+    },
+    {
+      "id": "trap",
+      "name": "Trap",
+      "family": "modern",
+      "note": "The space between the hits is the instrument.",
+      "bpm": { "min": 128, "max": 160 },
+      "swingBias": 0.2,
+      "weight": 4,
+      "affinity": {
+        "moods": ["dark", "epic", "cold", "triumphant", "menacing", "euphoric"],
+        "samples": ["movie", "classical", "world-music", "choir", "electronic"],
+        "drums": ["trap-hats", "punchy", "tight", "layered"],
+        "eras": ["2014-atlanta", "2019-atlanta", "2012-atlanta"],
+        "instruments": ["808-bass", "bell-lead", "pluck-synth", "brass-stab"]
+      }
+    },
+    {
+      "id": "plugg",
+      "name": "Plugg",
+      "family": "modern",
+      "note": "Cheap presets, expensive feeling.",
+      "bpm": { "min": 124, "max": 148 },
+      "swingBias": 0.2,
+      "weight": 2,
+      "affinity": {
+        "moods": ["dreamy", "hazy", "euphoric", "drowsy", "playful"],
+        "samples": ["video-game", "anime", "electronic", "new-age", "rnb"],
+        "drums": ["soft", "minimal", "trap-hats", "muffled"],
+        "eras": ["2018-internet", "2021-internet"],
+        "instruments": ["pluck-synth", "music-box", "bell-lead", "808-bass"]
+      }
+    },
+    {
+      "id": "rage",
+      "name": "Rage",
+      "family": "modern",
+      "note": "Loud, synthetic, no room to breathe.",
+      "bpm": { "min": 144, "max": 170 },
+      "swingBias": 0.1,
+      "weight": 2,
+      "affinity": {
+        "moods": ["aggressive", "euphoric", "futuristic", "chaotic", "epic"],
+        "samples": ["electronic", "video-game", "movie", "ambient"],
+        "drums": ["distorted", "punchy", "layered", "machine"],
+        "eras": ["2021-internet", "2023-la"],
+        "instruments": ["saw-lead", "distorted-808", "supersaw-pad", "modular-bleep"]
+      }
+    },
+    {
+      "id": "cloud-rap",
+      "name": "Cloud Rap",
+      "family": "chill",
+      "note": "Everything soaked in reverb until it floats.",
+      "bpm": { "min": 118, "max": 152 },
+      "swingBias": 0.2,
+      "weight": 3,
+      "affinity": {
+        "moods": ["dreamy", "ethereal", "hazy", "lonely", "spiritual", "drowsy"],
+        "samples": ["ambient", "new-age", "anime", "choir", "classical", "opera"],
+        "drums": ["soft", "muffled", "minimal", "gated"],
+        "eras": ["2012-internet", "2016-stockholm", "2020-internet"],
+        "instruments": ["granular-pad", "harp", "bell-lead", "choir-pad"]
+      }
+    },
+    {
+      "id": "west-coast",
+      "name": "West Coast",
+      "family": "classic",
+      "note": "Sunlight, low end, and a slow head nod.",
+      "bpm": { "min": 88, "max": 104 },
+      "swingBias": 0.5,
+      "weight": 3,
+      "affinity": {
+        "moods": ["sunny", "warm", "night-drive", "playful", "triumphant"],
+        "samples": ["funk", "disco", "soul", "rnb", "psych-rock"],
+        "drums": ["punchy", "clean", "compressed", "boomy"],
+        "eras": ["1994-compton", "1996-long-beach", "2015-la"],
+        "instruments": ["moog-bass", "talkbox", "clav", "synth-whistle"]
+      }
+    },
+    {
+      "id": "g-funk",
+      "name": "G-Funk",
+      "family": "classic",
+      "note": "One whining lead, one fat bass, endless sunshine.",
+      "bpm": { "min": 90, "max": 104 },
+      "swingBias": 0.45,
+      "weight": 2,
+      "affinity": {
+        "moods": ["sunny", "night-drive", "warm", "playful", "triumphant"],
+        "samples": ["funk", "disco", "soul", "rnb"],
+        "drums": ["clean", "punchy", "boomy", "live"],
+        "eras": ["1993-long-beach", "1996-compton"],
+        "instruments": ["synth-whistle", "moog-bass", "talkbox", "clav"]
+      }
+    },
+    {
+      "id": "east-coast",
+      "name": "East Coast",
+      "family": "classic",
+      "note": "Grimy loop, hard snare, city noise.",
+      "bpm": { "min": 86, "max": 100 },
+      "swingBias": 0.6,
+      "weight": 3,
+      "affinity": {
+        "moods": ["gritty", "cold", "dark", "restless", "nostalgic"],
+        "samples": ["jazz", "soul", "funk", "library-music", "rock"],
+        "drums": ["crunchy", "punchy", "dusty", "compressed"],
+        "eras": ["1995-nyc", "1997-brooklyn", "1993-queensbridge"],
+        "instruments": ["upright-bass", "muted-trumpet", "organ", "vinyl-guitar-chop"]
+      }
+    },
+    {
+      "id": "old-school",
+      "name": "Old School",
+      "family": "classic",
+      "note": "Break, bassline, and a lot of confidence.",
+      "bpm": { "min": 96, "max": 118 },
+      "swingBias": 0.55,
+      "weight": 2,
+      "affinity": {
+        "moods": ["playful", "sunny", "triumphant", "warm", "hopeful"],
+        "samples": ["funk", "disco", "rock", "soul", "marching-band"],
+        "drums": ["breakbeat", "live", "loose", "clean"],
+        "eras": ["1983-bronx", "1988-queens", "1979-harlem"],
+        "instruments": ["electric-bass", "clav", "brass-stab", "cowbell"]
+      }
+    },
+    {
+      "id": "neo-soul",
+      "name": "Neo Soul",
+      "family": "chill",
+      "note": "Play it late. Never on the click.",
+      "bpm": { "min": 68, "max": 96 },
+      "swingBias": 0.9,
+      "weight": 3,
+      "affinity": {
+        "moods": ["warm", "romantic", "smoky", "spiritual", "bittersweet", "calm"],
+        "samples": ["rnb", "soul", "gospel", "vocal-jazz", "brazilian"],
+        "drums": ["humanized", "loose", "soft", "live"],
+        "eras": ["2000-philly", "2016-la", "1998-detroit"],
+        "instruments": ["rhodes", "electric-bass", "clav", "female-vocal", "wurlitzer"]
+      }
+    },
+    {
+      "id": "jazzhop",
+      "name": "Jazzhop",
+      "family": "chill",
+      "note": "A jazz record that forgot it was being sampled.",
+      "bpm": { "min": 72, "max": 92 },
+      "swingBias": 0.8,
+      "weight": 3,
+      "affinity": {
+        "moods": ["calm", "rainy-night", "dreamy", "nostalgic", "smoky", "warm"],
+        "samples": ["jazz", "japanese-jazz", "bossa-nova", "vocal-jazz", "lounge-exotica"],
+        "drums": ["soft", "loose", "vinyl", "humanized"],
+        "eras": ["1998-tokyo", "2016-bedroom", "1991-native-tongues"],
+        "instruments": ["piano", "double-bass", "vibraphone", "flute", "nylon-guitar"]
+      }
+    },
+    {
+      "id": "chopped-screwed",
+      "name": "Chopped & Screwed",
+      "family": "raw",
+      "note": "Slow it down until it becomes a different song.",
+      "bpm": { "min": 54, "max": 72 },
+      "swingBias": 0.4,
+      "weight": 2,
+      "affinity": {
+        "moods": ["drowsy", "hazy", "smoky", "menacing", "lonely"],
+        "samples": ["rnb", "soul", "funk", "disco"],
+        "drums": ["boomy", "muffled", "roland-808", "loose"],
+        "eras": ["1996-houston", "2000-houston"],
+        "instruments": ["808-bass", "organ", "detuned-synth"]
+      }
+    },
+    {
+      "id": "grime",
+      "name": "Grime",
+      "family": "modern",
+      "note": "Square waves and no apologies.",
+      "bpm": { "min": 136, "max": 144 },
+      "swingBias": 0.2,
+      "weight": 2,
+      "affinity": {
+        "moods": ["aggressive", "cold", "restless", "futuristic", "tense"],
+        "samples": ["video-game", "electronic", "movie", "field-recording"],
+        "drums": ["machine", "tight", "gated", "distorted"],
+        "eras": ["2003-london", "2016-london"],
+        "instruments": ["square-lead", "sub-bass", "orchestra-hit", "modular-bleep"]
+      }
+    },
+    {
+      "id": "jersey-club",
+      "name": "Jersey Club",
+      "family": "dance",
+      "note": "Five-kick bounce. Chop the vocal to pieces.",
+      "bpm": { "min": 128, "max": 146 },
+      "swingBias": 0.25,
+      "weight": 2,
+      "affinity": {
+        "moods": ["euphoric", "playful", "restless", "sunny", "chaotic"],
+        "samples": ["rnb", "disco", "cartoon", "tv-commercial", "electronic"],
+        "drums": ["punchy", "tight", "machine", "layered"],
+        "eras": ["2013-newark", "2022-internet"],
+        "instruments": ["vocal-chop", "sub-bass", "pluck-synth", "cowbell"]
+      }
+    },
+    {
+      "id": "baile-funk",
+      "name": "Baile Funk",
+      "family": "dance",
+      "note": "Tamborzão first, everything else second.",
+      "bpm": { "min": 128, "max": 152 },
+      "swingBias": 0.3,
+      "weight": 2,
+      "affinity": {
+        "moods": ["euphoric", "aggressive", "playful", "sunny", "chaotic"],
+        "samples": ["brazilian", "mpb", "funk", "cumbia", "field-recording"],
+        "drums": ["punchy", "distorted", "layered", "live"],
+        "eras": ["2005-rio", "2021-sao-paulo", "1998-rio"],
+        "instruments": ["atabaque", "brass-stab", "vocal-chop", "sub-bass"]
+      }
+    },
+    {
+      "id": "afro-trap",
+      "name": "Afro Trap",
+      "family": "dance",
+      "note": "Percussion carries the melody. Let it.",
+      "bpm": { "min": 94, "max": 112 },
+      "swingBias": 0.4,
+      "weight": 2,
+      "affinity": {
+        "moods": ["sunny", "warm", "euphoric", "romantic", "triumphant"],
+        "samples": ["afrobeat", "world-music", "reggae", "salsa", "gospel"],
+        "drums": ["live", "layered", "punchy", "loose"],
+        "eras": ["2019-lagos", "2017-paris", "2022-london"],
+        "instruments": ["log-drum", "nylon-guitar", "marimba", "sub-bass"]
+      }
+    },
+    {
+      "id": "alt-rnb",
+      "name": "Alternative R&B",
+      "family": "chill",
+      "note": "Wide, cold, and emotionally cornered.",
+      "bpm": { "min": 84, "max": 124 },
+      "swingBias": 0.35,
+      "weight": 2,
+      "affinity": {
+        "moods": ["romantic", "cold", "ethereal", "lonely", "bittersweet", "night-drive"],
+        "samples": ["rnb", "ambient", "electronic", "new-age", "korean-ballad"],
+        "drums": ["gated", "soft", "minimal", "compressed"],
+        "eras": ["2013-toronto", "2020-la", "2016-london"],
+        "instruments": ["supersaw-pad", "sub-bass", "female-vocal", "granular-pad"]
+      }
+    },
+    {
+      "id": "ambient-hip-hop",
+      "name": "Ambient Hip Hop",
+      "family": "left",
+      "note": "The loop is scenery. The drums are weather.",
+      "bpm": { "min": 60, "max": 86 },
+      "swingBias": 0.5,
+      "weight": 2,
+      "affinity": {
+        "moods": ["ethereal", "calm", "glacial", "lonely", "spiritual", "dreamy"],
+        "samples": ["ambient", "new-age", "field-recording", "classical", "choir", "folk"],
+        "drums": ["minimal", "soft", "muffled", "dusty"],
+        "eras": ["2015-reykjavik", "2010-internet", "2021-kyoto"],
+        "instruments": ["granular-pad", "tape-loop", "harp", "felt-piano", "kalimba"]
+      }
+    },
+    {
+      "id": "horrorcore",
+      "name": "Horrorcore",
+      "family": "raw",
+      "note": "Score a film that does not exist.",
+      "bpm": { "min": 82, "max": 104 },
+      "swingBias": 0.45,
+      "weight": 2,
+      "affinity": {
+        "moods": ["menacing", "paranoid", "dark", "tense", "broken"],
+        "samples": ["movie", "opera", "classical", "educational-film", "italian-soundtrack"],
+        "drums": ["heavy", "distorted", "crunchy", "gated"],
+        "eras": ["1995-detroit", "1997-memphis", "2018-brooklyn"],
+        "instruments": ["music-box", "theremin", "prepared-piano", "organ", "cello"]
+      }
+    }
+  ]
+}
