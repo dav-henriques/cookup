@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#060606">
   <meta name="color-scheme" content="dark">
 
-  <title>Beat Challenge — Random inspiration for music producers</title>
+  <title>cookup</title>
   <meta name="description" content="Generate complete beat production challenges: genre, BPM, mood, sample source, drums, creative rules and more. A new challenge every day, the same for everyone.">
 
   <!-- Social preview ------------------------------------------------------ -->
-  <meta property="og:title" content="Beat Challenge">
+  <meta property="og:title" content="cookup">
   <meta property="og:description" content="Random inspiration for music producers.">
   <meta property="og:type" content="website">
 
@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Beat Challenge">
+  <meta name="apple-mobile-web-app-title" content="cookup">
 
   <!-- Type: self-hosted Inter variable (see css/variables.css) ------------- -->
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font"
@@ -53,7 +53,7 @@
          Topbar
          ================================================================== -->
     <header class="topbar container">
-      <a class="brand" href="#home" aria-label="Beat Challenge — home">
+      <a class="brand" href="#home" aria-label="cookup — home">
         <span class="brand__mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
                stroke-linecap="round" style="color: var(--mood-tint)">
@@ -61,8 +61,7 @@
           </svg>
         </span>
         <span class="brand__text">
-          <span class="brand__name">Beat Challenge</span>
-          <span class="brand__sub">Producer prompts</span>
+          <span class="brand__name">cookup</span>
         </span>
       </a>
 
@@ -156,7 +155,7 @@
         </svg>
         <p class="empty__title">Could not load the challenge database</p>
         <p class="empty__text">
-          Beat Challenge reads its data from <code>/data/*.json</code>, so it needs to be served
+          cookup reads its data from <code>/data/*.json</code>, so it needs to be served
           over http — open it through GitHub Pages or a local server rather than double-clicking
           the file.
         </p>
@@ -177,7 +176,7 @@
             </svg>
           </div>
 
-          <h1 class="hero__title" id="home-title">Beat Challenge</h1>
+          <h1 class="hero__title" id="home-title">cookup</h1>
           <p class="hero__subtitle">Random inspiration for music producers.</p>
 
           <div class="hero__actions">
@@ -188,7 +187,7 @@
                 <path d="M3.5 7h3.2c1.6 0 2.5.8 3.4 2.2l3.8 5.6c.9 1.4 1.8 2.2 3.4 2.2H20"/>
                 <path d="M3.5 17h3.2c1.6 0 2.5-.8 3.4-2.2l.7-1M20 7h-2.7c-1.6 0-2.5.8-3.4 2.2l-.6 1"/>
               </svg>
-              Generate Challenge
+              next challenge
             </button>
 
             <button class="btn btn--ghost btn--sm" type="button" data-action="daily">
@@ -197,22 +196,22 @@
                 <rect x="3.5" y="5" width="17" height="15" rx="3"/>
                 <path d="M3.5 10h17M8 3v4M16 3v4"/>
               </svg>
-              Daily Challenge
+              daily challenge
             </button>
           </div>
 
           <div class="hero__meta">
             <div class="hero__meta-item">
               <span class="hero__meta-value" id="hero-total">—</span>
-              <span class="hero__meta-label">Genres</span>
+              <span class="hero__meta-label">genres</span>
             </div>
             <div class="hero__meta-item">
               <span class="hero__meta-value" id="hero-rules">—</span>
-              <span class="hero__meta-label">Rules</span>
+              <span class="hero__meta-label">rules</span>
             </div>
             <div class="hero__meta-item">
               <span class="hero__meta-value" id="hero-combos">—</span>
-              <span class="hero__meta-label">Combinations</span>
+              <span class="hero__meta-label">combinations</span>
             </div>
           </div>
         </div>
