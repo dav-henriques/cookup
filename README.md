@@ -1,199 +1,148 @@
-# Beat Challenge
+# CookUp
 
-**Random inspiration for music producers.**
+A production session companion. Not a DAW, not a notes app, not a productivity tool —
+a quiet second screen that sits beside FL Studio, Ableton, Logic or Cubase while you work.
 
-A static web app that generates complete beat production challenges — genre, BPM, mood,
-sample source, drums, groove, instrumentation, and the constraints that actually make the
-session interesting. Two modes: a **Daily Challenge** that is identical for everyone in the
-world, and a **Free Challenge** that rerolls infinitely.
+Everything on the session screen is designed to be read in under two seconds so you can
+go straight back to the music.
 
-No backend. No database. No build step. No Node.js at runtime.
-HTML, CSS and vanilla JavaScript only — drop it on GitHub Pages and it works.
+- **Clock** — the current time, large. Click it to switch 12 / 24 hour.
+- **Session timer** — elapsed time that survives refreshes, sleep and browser restarts.
+- **BPM calculator** — beat and bar lengths in seconds, from 1 beat to 32 bars, 4/4.
+- **Tap tempo** — tap in time; the estimate feeds the calculator automatically.
+- **Water** — tap to add a glass, hold to reset.
+- **Break reminder** — 30 / 45 / 60 / 90 minutes, a small silent pill in the corner.
+- **History** — every session is kept locally with duration, breaks and water count.
+
+No backend, no frameworks, no build step, no accounts, no analytics. All data lives in
+LocalStorage on the device it was created on.
 
 ---
 
-## Deploying to GitHub Pages
+## Running it
 
-1. Push this folder to a repository.
-2. **Settings → Pages → Source: Deploy from a branch**, pick `main` and `/ (root)`.
-3. Done. The app is fully relative-path based, so it works from
-   `user.github.io/repo/` as well as from a custom domain.
-
-`.nojekyll` is included so Pages serves every file untouched.
-
-### Running locally
-
-The app fetches its database from `data/*.json`, which browsers block on `file://`.
-Serve the folder over http:
+Because the app uses ES modules and a service worker, it needs to be served over HTTP —
+opening `index.html` from the filesystem will not work.
 
 ```bash
+# any static server will do
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Opening `index.html` by double-clicking will show a friendly error explaining exactly this.
+## Deploying to GitHub Pages
+
+1. Create an empty repository on GitHub.
+2. Push this folder to it:
+
+   ```bash
+   git remote add origin git@github.com:<you>/cookup.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+3. In the repository, go to **Settings → Pages**, set **Source** to *Deploy from a branch*,
+   pick `main` and the `/ (root)` folder, and save.
+4. The app appears at `https://<you>.github.io/cookup/` after a minute or so.
+
+Every path in the project is relative, so it works from a repository subdirectory,
+a custom domain or a local folder without any configuration.
+
+`.nojekyll` is included so GitHub Pages serves the files as-is.
+
+## Installing it
+
+Once loaded over HTTPS, the browser offers CookUp as an installable app
+(Chrome: the install icon in the address bar; iOS Safari: Share → Add to Home Screen).
+After the first load it works with no connection at all.
 
 ---
 
 ## Project structure
 
 ```
-index.html                 Single page: shell, XMB nav, all five views, share sheet
-manifest.webmanifest       Add-to-Home-Screen metadata
+index.html              markup for both screens
+manifest.json           PWA manifest
+service-worker.js       offline cache (bump CACHE when files change)
+.nojekyll               tells GitHub Pages not to run Jekyll
 
-/css
-    variables.css          Design tokens + self-hosted @font-face  (edit colours here)
-    animations.css         Every @keyframes and motion utility
-    style.css              Structure and components (18 numbered sections)
+styles/
+  style.css             tokens, components, responsive layout
 
-/js
-    app.js                 Application shell: boot, state, routing, events
-    generator.js           Pure seeded generation + display row mapping
-    daily.js               date -> seed -> daily challenge, countdown helpers
-    ui.js                  Rendering, icon set, toasts, mood tint
-    animations.js          Canvas wave background + motion helpers
-    storage.js             LocalStorage: history, favourites, stats, prefs
-    share.js               Poster export (Canvas), copy, native share
+scripts/
+  ui.js                 entry point: routing, screen wiring
+  storage.js            the only module that touches LocalStorage
+  sessions.js           session model, timing maths, formatting
+  clock.js              wall clock
+  timer.js              elapsed time
+  bpm.js                bar-length calculator
+  tap-tempo.js          tap tempo
+  water.js              water counter
+  breaks.js             break reminder
 
-/data
-    genres.json            34 genres, each with BPM window and affinities
-    moods.json             40 moods with colour tints and production notes
-    bpms.json              Tempo zones, groove feels, time signatures, quantize
-    samples.json           50 sample sources with record "flavours", chops, treatments
-    drums.json             30 drum styles, kits, percussion, bass approaches
-    challenges.json        228 creative rules, 120 extras, instruments, eras, chords
+components/
+  session-card.js       a row in the history list
+  modal.js              single-field prompt
+  toast.js              corner notification
 
-/assets
-    fonts/                 Inter variable subset (SIL OFL, license included)
-    icon-*.png             App icons for Add to Home Screen
+fonts/                  Inter (variable, latin subset), self-hosted for offline use
+icons/                  app icons, generated from icon.svg
 ```
 
-> The `js/` folder adds two modules beyond the original brief — `storage.js` and
-> `share.js`. Persistence and the 1080×1920 poster renderer are each substantial
-> enough that folding them into `app.js` or `ui.js` would have made those files
-> the wrong shape. Everything else follows the requested layout exactly.
+### How the timer survives everything
 
----
+A session stores `accumulatedMs` plus `runningSince`, a wall-clock timestamp of the moment
+it last started. Elapsed time is always *derived*:
 
-## How generation works
-
-### Deterministic by design
-
-```
-seed ──▶ xmur3 hash ──▶ mulberry32 PRNG ──▶ challenge
+```js
+accumulatedMs + (status === 'running' ? Date.now() - runningSince : 0)
 ```
 
-Every draw comes from one seeded PRNG, so a seed always reproduces the same challenge.
-That single property gives three features for free:
+Nothing counts, nothing writes on a tick, and closing the browser mid-session changes
+nothing. Pausing folds the live segment into `accumulatedMs` and clears `runningSince`.
 
-- **Daily Challenge** — the seed is the UTC date (`2026-07-25`), so every user on earth
-  gets the same challenge, with no server involved. It rolls over at UTC midnight and the
-  page updates itself without a reload.
-- **Shareable links** — a generated challenge lives at `#s=<seed>`. Send the URL, the
-  other person sees the exact same brief.
-- **History** — reopening a saved challenge is exact, not approximate.
+Only one session runs at a time — opening or resuming a session pauses any other, so old
+sessions never accumulate phantom hours.
 
-### Coherent, not random
+### Adding a widget
 
-A pure random draw produces nonsense like *Drill at 74 BPM with bossa nova drums*.
-Instead, the genre is drawn first and carries its own gravity:
+1. Write `scripts/my-widget.js` exporting `mount(opts)` and, if it shows session data,
+   `refresh()`.
+2. Add the markup to `index.html` with a `grid-area`, and the area name to `.grid` in
+   `style.css` (base, tablet, mobile and landscape).
+3. Mount it in `mountWidgets()` in `ui.js`, and call its `refresh()` from
+   `refreshWidgets()` if needed.
+4. Add the file to `ASSETS` in `service-worker.js` and bump `CACHE`.
+
+### Data shape
 
 ```jsonc
 {
-  "id": "boom-bap",
-  "bpm": { "min": 82, "max": 96 },   // BPM is drawn inside this window
-  "swingBias": 0.7,                  // nudges the swing percentage
-  "affinity": {                      // these entries stay in the pool but
-    "moods":   ["dusty", "dark"],    // become ~6x more likely to be drawn
-    "samples": ["soul", "jazz"],
-    "drums":   ["dusty", "crunchy"],
-    "eras":    ["1994-nyc"],
-    "instruments": ["rhodes"]
-  }
+  "version": 1,
+  "activeSessionId": "…",
+  "settings": { "clock24": false, "bpm": 84, "breakIntervalMin": 60 },
+  "sessions": [{
+    "id": "…",
+    "name": "Late Night",
+    "status": "running",        // running | paused | completed
+    "createdAt": 1753500000000, // start date + time
+    "endedAt": null,            // end time, set by End Session
+    "accumulatedMs": 8280000,
+    "runningSince": 1753500000000,
+    "water": 4,
+    "breaks": 2,
+    "breakIntervalMin": 60,
+    "nextBreakAtMs": 10800000
+  }]
 }
 ```
 
-Affinities *bias* rather than *restrict*, so surprises still happen — they just happen
-on purpose. Difficulty is chosen before the creative rule, and the rule pool is filtered
-to match: an `Easy` challenge never draws *"No EQ on any channel"*, and an `Insane` one
-draws two hard rules at once.
-
-### Adding content
-
-Everything is data. To add a genre, append an object to `data/genres.json` — no code
-changes. Same for moods, samples, drums, rules and extras. To add a whole new *parameter*
-(say, "Reference Track"), add the pool to a JSON file, resolve it in
-`generateChallenge()`, and add one row to `toRows()` in `generator.js`. The card grid,
-the poster export and the copy/share text all pick it up automatically.
+Stored under the LocalStorage key `cookup.state.v1`.
 
 ---
 
-## Interface
+## Licence
 
-Two references, mixed rather than copied:
+The code is yours to do whatever you like with.
 
-- **PS3 XMB** — black canvas, horizontal icon flow, huge negative space, and slow
-  translucent ribbons drifting behind everything (Canvas 2D, time-based so the speed is
-  identical at 60 Hz and 120 Hz, paused when the tab is hidden).
-- **iOS App Library** — frosted rounded cards, soft glow, a strict grid, generous
-  spacing.
-
-The whole interface takes on the **tint of the current mood** — cards, glow, nav marker,
-background ribbons and the exported poster all drift towards it over ~700 ms.
-
-On desktop the navigation is a horizontal XMB rail near the top. Below 860 px it becomes
-a floating frosted tab bar, and the card grid drops to two columns. Both breakpoints use
-spans that always add up to a full row, so there are no ragged edges at any width.
-
-### Cinematic reveal
-
-Generating fades the cards out, runs a loader whose caption cycles through the steps of
-the draw, then brings the parameters back **one by one** — each card rises, un-blurs and
-settles 58 ms after the one before it.
-
----
-
-## Features
-
-| | |
-|---|---|
-| **Daily Challenge** | Same for everyone worldwide, rolls over at UTC midnight with a live countdown |
-| **Free Challenge** | Infinite rerolls, each one linkable via `#s=<seed>` |
-| **Save as Image** | 1080×1920 Story and 1080×1080 Square posters, painted with Canvas — no libraries, no server |
-| **Copy / Share** | Plain-text brief, plus the native share sheet (including the image) where supported |
-| **History** | Last 60 challenges, stored automatically |
-| **Favourites** | Up to 200 saved challenges |
-| **Statistics** | Total generated, average BPM, most drawn genre / mood / sample source, consecutive-day streak |
-
-Keyboard: `G` or `Space` generates, `←` `→` move along the nav rail, `Esc` closes the
-share sheet.
-
-Everything is stored in LocalStorage on the user's own device. Nothing is uploaded,
-and the app degrades to an in-memory store if storage is blocked.
-
----
-
-## Accessibility & performance
-
-- Semantic tabs (`role="tablist"` / `tabpanel"`), labelled controls, visible focus rings.
-- `prefers-reduced-motion` disables the reveal cascade and freezes the background on a
-  single static frame.
-- All text is written with `textContent`, never string-interpolated HTML.
-- One font file (48 KB) preloaded, zero third-party requests, no runtime dependencies —
-  the whole app is roughly 350 KB including fonts, icons and the entire database.
-
----
-
-## Ideas the architecture is already ready for
-
-Themes (swap `variables.css` tokens), challenge collections (filter `creativeRules` by
-`tags`), achievements (read from `storage.getStats()`), weekly challenges (reuse
-`daily.js` with a week key), and difficulty selection (constrain the pool passed to
-`generateChallenge`).
-
----
-
-## Credits
-
-Typeface: [Inter](https://rsms.me/inter/) by Rasmus Andersson, SIL Open Font License 1.1
-(`assets/fonts/Inter-OFL.txt`).
+Inter is bundled under the SIL Open Font License 1.1 — see `fonts/Inter-LICENSE.txt`.
